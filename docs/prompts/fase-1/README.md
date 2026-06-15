@@ -12,8 +12,9 @@ Prompts derivados do backlog [`docs/backlog/fase-1/fase-1-mvp1.md`](../../backlo
 | **04** | [04-api-endpoints.md](04-api-endpoints.md) | MVP1-05 | 02 |
 | **05** | [05-testes.md](05-testes.md) | MVP1-06 | 01, 02 |
 | **06** | [06-operacao-local-wsl.md](06-operacao-local-wsl.md) | MVP1-07 | 04 |
+| **07** | [07-brapi-um-ativo-por-requisicao.md](07-brapi-um-ativo-por-requisicao.md) | MVP1-08 | 01 |
 
-> **03** e **04** podem ser feitos em paralelo após o **02**. O **05** deve vir antes do **06**. O **06** fecha a operação local do MVP 1.
+> **03** e **04** podem ser feitos em paralelo após o **02**. O **05** deve vir antes do **06**. O **07** é pós-MVP operacional — corrige coleta multi-ativo no plano BRAPI gratuito.
 
 ## Como invocar
 

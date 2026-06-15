@@ -23,6 +23,8 @@ class Settings(BaseSettings):
 
     brapi_token: str = ""
 
+    brapi_request_delay_seconds: float = 0.2
+
     monitored_assets: str = "PETR4,VALE3,HGLG11,MXRF11"
 
     radar_schedule_hour: int = 18

@@ -1,10 +1,14 @@
 from __future__ import annotations
 
+import logging
+import time
 from dataclasses import dataclass
 
 import httpx
 
 from app.config import settings
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -18,6 +22,12 @@ class QuoteData:
     name: str | None = None
 
 
+def apply_brapi_request_delay() -> None:
+    delay = settings.brapi_request_delay_seconds
+    if delay > 0:
+        time.sleep(delay)
+
+
 class StocksCollector:
     """Coleta cotações de ações via brapi.dev (gratuita)."""
 
@@ -29,35 +39,77 @@ class StocksCollector:
         if not tickers:
             return []
 
-        symbols = ",".join(tickers)
-        url = f"{self.BASE_URL}/quote/{symbols}"
+        results: list[QuoteData] = []
+        with httpx.Client(timeout=30.0) as client:
+            for index, ticker in enumerate(tickers):
+                if index > 0:
+                    apply_brapi_request_delay()
+                quote = self._fetch_single_quote(client, ticker, include_historical=include_historical)
+                if quote is not None:
+                    results.append(quote)
+
+        return results
+
+    def _fetch_single_quote(
+        self,
+        client: httpx.Client,
+        ticker: str,
+        *,
+        include_historical: bool,
+    ) -> QuoteData | None:
+        symbol = ticker.strip().upper()
+        if not symbol:
+            return None
+
+        url = f"{self.BASE_URL}/quote/{symbol}"
         headers = self._build_headers()
         params = dict(self.HISTORICAL_PARAMS) if include_historical else None
 
-        with httpx.Client(timeout=30.0) as client:
+        try:
             response = client.get(url, params=params, headers=headers)
+        except httpx.HTTPError as exc:
+            logger.warning("BRAPI rede falhou para %s: %s", symbol, exc)
+            return None
+
+        if response.status_code == 401:
             self._raise_for_status(response)
-            payload = response.json()
 
-        results: list[QuoteData] = []
-        for item in payload.get("results", []):
-            price = float(item.get("regularMarketPrice") or 0)
-            change_percent_week, change_percent_month = _calc_period_changes(
-                item.get("historicalDataPrice") or [],
-                price,
+        if response.status_code >= 400:
+            logger.warning(
+                "BRAPI %s para %s: %s",
+                response.status_code,
+                symbol,
+                _extract_error_message(response),
             )
-            results.append(
-                QuoteData(
-                    ticker=item.get("symbol", "").upper(),
-                    name=item.get("shortName") or item.get("longName"),
-                    price=price,
-                    change_percent_day=_safe_float(item.get("regularMarketChangePercent")),
-                    change_percent_week=change_percent_week,
-                    change_percent_month=change_percent_month,
-                )
-            )
+            return None
 
-        return results
+        payload = response.json()
+        items = payload.get("results") or []
+        if not items:
+            logger.warning("BRAPI sem dados para %s", symbol)
+            return None
+
+        return self._parse_quote_item(items[0])
+
+    def _parse_quote_item(self, item: dict) -> QuoteData | None:
+        price = float(item.get("regularMarketPrice") or 0)
+        if price <= 0:
+            ticker = str(item.get("symbol", "")).upper()
+            logger.warning("BRAPI preço inválido para %s", ticker)
+            return None
+
+        change_percent_week, change_percent_month = _calc_period_changes(
+            item.get("historicalDataPrice") or [],
+            price,
+        )
+        return QuoteData(
+            ticker=str(item.get("symbol", "")).upper(),
+            name=item.get("shortName") or item.get("longName"),
+            price=price,
+            change_percent_day=_safe_float(item.get("regularMarketChangePercent")),
+            change_percent_week=change_percent_week,
+            change_percent_month=change_percent_month,
+        )
 
     def _build_headers(self) -> dict[str, str]:
         if not settings.brapi_token_configured:

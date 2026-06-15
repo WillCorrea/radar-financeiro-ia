@@ -27,7 +27,7 @@ Leia: `database/models.py`, `database/connection.py`, `app/config.py`
 
 ## Critérios de aceite
 
-- [ ] `alembic upgrade head` cria tabelas em banco limpo
-- [ ] `env.py` usa `DATABASE_URL` do projeto
-- [ ] Models importados corretamente para autogenerate
-- [ ] Instruções de uso documentadas
+- [x] `alembic upgrade head` cria tabelas em banco limpo
+- [x] `env.py` usa `DATABASE_URL` do projeto
+- [x] Models importados corretamente para autogenerate
+- [x] Instruções de uso documentadas

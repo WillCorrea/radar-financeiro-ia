@@ -25,6 +25,7 @@ Base de conhecimento do projeto. Tudo que precisamos para ir da Fase 0 até o MV
 | [backlog/](backlog/README.md) | Estórias por fase |
 
 | [prompts/](prompts/README.md) | Prompts de implementação derivados das estórias |
+| [operations/database-migrations.md](operations/database-migrations.md) | Migrations Alembic — setup e comandos |
 
 
 
@@ -48,9 +49,9 @@ Base de conhecimento do projeto. Tudo que precisamos para ir da Fase 0 até o MV
 
 
 
-- [x] Fase 0 — documentação e convenções (F0-06 Alembic pendente)
+- [x] Fase 0 — documentação e convenções (incl. F0-06 Alembic)
 
-- [ ] Fase 1 — completar MVP 1 (Radar Diário) — [backlog](backlog/fase-1/fase-1-mvp1.md)
+- [x] Fase 1 — MVP 1 (Radar Diário) — [backlog](backlog/fase-1/fase-1-mvp1.md)
 
 - [ ] Fase 2 — MVP 2 (Eventos Relevantes)
 

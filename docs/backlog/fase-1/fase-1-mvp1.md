@@ -32,8 +32,9 @@ O mercado apresenta sinais mistos, com destaque para o setor de commodities e fu
 | MVP1-05 | Endpoints de radar e histórico | [04-api-endpoints.md](../../prompts/fase-1/04-api-endpoints.md) | Média | concluído |
 | MVP1-06 | Testes do fluxo principal | [05-testes.md](../../prompts/fase-1/05-testes.md) | Média | concluído |
 | MVP1-07 | Operação local do radar (WSL) | [06-operacao-local-wsl.md](../../prompts/fase-1/06-operacao-local-wsl.md) | Alta | concluído |
+| MVP1-08 | BRAPI — 1 ativo por requisição | [07-brapi-um-ativo-por-requisicao.md](../../prompts/fase-1/07-brapi-um-ativo-por-requisicao.md) | Alta | concluído |
 
-**Ordem recomendada:** MVP1-01 → MVP1-02/03 → MVP1-04 → MVP1-05 → MVP1-06 → MVP1-07
+**Ordem recomendada:** MVP1-01 → MVP1-02/03 → MVP1-04 → MVP1-05 → MVP1-06 → MVP1-07 → MVP1-08
 
 ---
 
@@ -165,4 +166,30 @@ O mercado apresenta sinais mistos, com destaque para o setor de commodities e fu
 - Múltiplos horários por usuário (MVP 4)
 
 **Prompt:** [`docs/prompts/fase-1/06-operacao-local-wsl.md`](../../prompts/fase-1/06-operacao-local-wsl.md)
+**Status:** concluído
+
+---
+
+## MVP1-08 — BRAPI: 1 ativo por requisição
+
+**Como** investidor no plano gratuito da BRAPI
+**Quero** que a coleta funcione com vários ativos em `MONITORED_ASSETS`
+**Para** receber o radar completo sem erro 400 por limite de símbolos por chamada
+
+**Contexto:** o plano gratuito da brapi.dev aceita **1 ativo por requisição**. Hoje `StocksCollector` e `FiiCollector` enviam vários tickers em uma única URL (`/quote/PETR4,VALE3` ou `symbols=HGLG11,MXRF11`), o que falha ou retorna dados incompletos com token free.
+
+**Critérios de aceite:**
+- [x] `StocksCollector.fetch_quotes()` faz uma requisição **por ticker** (ações)
+- [x] `FiiCollector.fetch_quotes()` respeita o mesmo limite nos endpoints de quote, indicadores e histórico
+- [x] Falha em um ticker não impede a coleta dos demais (resultado parcial + continuidade do job)
+- [x] Delay configurável via `BRAPI_REQUEST_DELAY_SECONDS` no `.env`
+- [x] `python run_job.py` funciona com `MONITORED_ASSETS=PETR4,VALE3,HGLG11,MXRF11`
+- [x] `tests/test_stocks_collector.py` e `tests/test_fii_collector.py` validam múltiplas chamadas HTTP (mock)
+
+**Fora de escopo:**
+- Upgrade de plano BRAPI ou cache distribuído
+- Retry avançado com fila/backoff exponencial
+- Alterar `PriceAnalyzer`, `DailyRadarJob` ou endpoints da API
+
+**Prompt:** [`docs/prompts/fase-1/07-brapi-um-ativo-por-requisicao.md`](../../prompts/fase-1/07-brapi-um-ativo-por-requisicao.md)
 **Status:** concluído

@@ -13,6 +13,7 @@ SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
 
 def init_db() -> None:
+    """Cria tabelas via SQLAlchemy. Prefira `alembic upgrade head` em novos ambientes."""
     Base.metadata.create_all(bind=engine)
 
 

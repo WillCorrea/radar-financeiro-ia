@@ -22,6 +22,7 @@ radar-financeiro-ia/
 ├── agents/           # Resumos com IA
 ├── notifications/    # Telegram / WhatsApp
 ├── jobs/             # Orquestração
+├── alembic/          # Migrations do PostgreSQL
 ├── scripts/          # Operação local (cron)
 ├── logs/             # Logs do radar diário (gitignored)
 └── database/         # Models e conexão
@@ -42,6 +43,7 @@ cp .env.example .env
 # Edite .env com suas chaves
 
 docker compose up -d
+alembic upgrade head   # banco novo; se já usou create_all, veja docs abaixo
 python run_job.py
 ```
 
@@ -122,6 +124,19 @@ python run_scheduler.py
 # Reanexar: tmux attach -t radar
 ```
 
+## Migrations (Alembic)
+
+Schema versionado em `alembic/`. Guia completo: [`docs/operations/database-migrations.md`](docs/operations/database-migrations.md).
+
+```bash
+source .venv/bin/activate
+alembic upgrade head          # banco novo
+alembic current               # revisão aplicada
+alembic revision --autogenerate -m "descricao"   # após alterar models
+```
+
+> Banco já criado com `create_all()`? Use `alembic stamp head` uma vez (detalhes no guia).
+
 ## Documentação
 
 Toda a visão, roadmap e plano de implementação (Fase 0 → MVP 5) está em [`docs/`](docs/README.md).
@@ -134,7 +149,6 @@ Toda a visão, roadmap e plano de implementação (Fase 0 → MVP 5) está em [`
 
 ## Próximos passos
 
-- [x] MVP 1 — radar diário (código, API, testes)
-- [ ] Validar operação local (cron + logs) — [`docs/prompts/fase-1/06-operacao-local-wsl.md`](docs/prompts/fase-1/06-operacao-local-wsl.md)
-- [ ] F0-06: Alembic (migrations)
-- [ ] MVP 2: eventos relevantes (dividendos, fatos relevantes)
+- [x] MVP 1 — radar diário (código, API, testes, operação local, BRAPI multi-ativo)
+- [x] F0-06 — Alembic (migrations)
+- [ ] MVP 2 — eventos relevantes (dividendos, fatos relevantes)

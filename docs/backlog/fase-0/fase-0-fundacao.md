@@ -15,7 +15,7 @@
 | F0-03 | Criar rules do Cursor | concluído |
 | F0-04 | Estruturar backlog por fases | concluído |
 | F0-05 | Adicionar `__init__.py` nos pacotes | concluído |
-| F0-06 | Configurar Alembic para migrations | pendente |
+| F0-06 | Configurar Alembic para migrations | concluído |
 
 ---
 
@@ -102,9 +102,9 @@
 **Para** evoluir o modelo de dados com segurança
 
 **Critérios de aceite:**
-- [ ] Alembic configurado e integrado com `database/models.py`
-- [ ] Primeira migration gerada a partir dos models atuais
-- [ ] Instruções de uso no README ou docs
+- [x] Alembic configurado e integrado com `database/models.py`
+- [x] Primeira migration gerada a partir dos models atuais
+- [x] Instruções de uso no README ou docs
 
 **Prompt:** [`docs/prompts/fase-0/01-alembic-setup.md`](../../prompts/fase-0/01-alembic-setup.md)
-**Status:** pendente
+**Status:** concluído

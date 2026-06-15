@@ -112,7 +112,7 @@ flowchart TD
 
 **Backlog:** [`backlog/fase-0/fase-0-fundacao.md`](backlog/fase-0/fase-0-fundacao.md)
 
-**Status:** 0.1–0.4 concluídos. 0.5 (Alembic) pendente — ver [`prompts/fase-0/01-alembic-setup.md`](prompts/fase-0/01-alembic-setup.md).
+**Status:** 0.1–0.5 concluídos.
 
 ---
 

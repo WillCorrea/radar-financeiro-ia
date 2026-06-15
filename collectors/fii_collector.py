@@ -1,9 +1,13 @@
 from __future__ import annotations
 
+import logging
+
 import httpx
 
 from app.config import settings
-from collectors.stocks_collector import QuoteData, StocksCollector, _calc_period_changes
+from collectors.stocks_collector import QuoteData, StocksCollector, _calc_period_changes, apply_brapi_request_delay
+
+logger = logging.getLogger(__name__)
 
 
 class FiiCollector:
@@ -48,32 +52,41 @@ class FiiCollector:
         if not tickers:
             return {}
 
-        symbols = ",".join(tickers)
         headers = self._build_headers()
-
-        try:
-            with httpx.Client(timeout=30.0) as client:
-                response = client.get(
-                    self.FII_INDICATORS_URL,
-                    params={"symbols": symbols},
-                    headers=headers,
-                )
-                if response.status_code in {400, 401, 403}:
-                    return {}
-                response.raise_for_status()
-                payload = response.json()
-        except httpx.HTTPError:
-            return {}
-
         indicators: dict[str, dict[str, float | None]] = {}
-        for item in payload.get("fiis", []):
-            ticker = str(item.get("symbol", "")).upper()
-            if not ticker:
-                continue
-            indicators[ticker] = {
-                "nav_per_share": _safe_float(item.get("navPerShare")),
-                "monthly_return": _safe_float(item.get("monthlyReturn")),
-            }
+
+        with httpx.Client(timeout=30.0) as client:
+            for index, ticker in enumerate(tickers):
+                if index > 0:
+                    apply_brapi_request_delay()
+
+                symbol = ticker.strip().upper()
+                if not symbol:
+                    continue
+
+                try:
+                    response = client.get(
+                        self.FII_INDICATORS_URL,
+                        params={"symbols": symbol},
+                        headers=headers,
+                    )
+                except httpx.HTTPError as exc:
+                    logger.warning("BRAPI indicadores rede falhou para %s: %s", symbol, exc)
+                    continue
+
+                if response.status_code >= 400:
+                    logger.warning("BRAPI indicadores %s para %s", response.status_code, symbol)
+                    continue
+
+                payload = response.json()
+                for item in payload.get("fiis", []):
+                    item_ticker = str(item.get("symbol", "")).upper()
+                    if item_ticker != symbol:
+                        continue
+                    indicators[item_ticker] = {
+                        "nav_per_share": _safe_float(item.get("navPerShare")),
+                        "monthly_return": _safe_float(item.get("monthlyReturn")),
+                    }
 
         return indicators
 
@@ -81,28 +94,37 @@ class FiiCollector:
         if not tickers:
             return {}
 
-        symbols = ",".join(tickers)
         headers = self._build_headers()
-
-        try:
-            with httpx.Client(timeout=30.0) as client:
-                response = client.get(
-                    self.FII_HISTORICAL_URL,
-                    params={"symbols": symbols, "sortOrder": "asc"},
-                    headers=headers,
-                )
-                if response.status_code in {400, 401, 403}:
-                    return {}
-                response.raise_for_status()
-                payload = response.json()
-        except httpx.HTTPError:
-            return {}
-
         historical: dict[str, list[dict]] = {}
-        for item in payload.get("fiis", []):
-            ticker = str(item.get("symbol", "")).upper()
-            if ticker:
-                historical[ticker] = item.get("historicalDataPrice") or []
+
+        with httpx.Client(timeout=30.0) as client:
+            for index, ticker in enumerate(tickers):
+                if index > 0:
+                    apply_brapi_request_delay()
+
+                symbol = ticker.strip().upper()
+                if not symbol:
+                    continue
+
+                try:
+                    response = client.get(
+                        self.FII_HISTORICAL_URL,
+                        params={"symbols": symbol, "sortOrder": "asc"},
+                        headers=headers,
+                    )
+                except httpx.HTTPError as exc:
+                    logger.warning("BRAPI histórico rede falhou para %s: %s", symbol, exc)
+                    continue
+
+                if response.status_code >= 400:
+                    logger.warning("BRAPI histórico %s para %s", response.status_code, symbol)
+                    continue
+
+                payload = response.json()
+                for item in payload.get("fiis", []):
+                    item_ticker = str(item.get("symbol", "")).upper()
+                    if item_ticker == symbol:
+                        historical[item_ticker] = item.get("historicalDataPrice") or []
 
         return historical
 

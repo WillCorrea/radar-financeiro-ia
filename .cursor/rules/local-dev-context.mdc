@@ -17,7 +17,7 @@ alwaysApply: true
 | Serviço | Config | Notas |
 |---|---|---|
 | Postgres | Docker, porta **5433** | `docker compose up -d` |
-| BRAPI | `BRAPI_TOKEN` no `.env` | FIIs exigem token; plano free = **1 ativo/requisição** |
+| BRAPI | `BRAPI_TOKEN` + `BRAPI_REQUEST_DELAY_SECONDS` no `.env` | FIIs exigem token; plano free = **1 ativo/requisição**; delay default 0,2s |
 | LLM | `LLM_PROVIDER=gemini` | Fallback automático se Gemini falhar (ex.: 429) |
 | Telegram | `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` | Canal principal do MVP 1 |
 | Radar diário | **cron** (padrão) | API **não** obrigatória para envio automático |
@@ -50,8 +50,8 @@ Gerar linha do cron: `./scripts/print-cron-entry.sh` (lê `RADAR_SCHEDULE_*` do 
 - **Backlog:** `docs/backlog/fase-1/fase-1-mvp1.md`
 - **Prompts:** `docs/prompts/fase-1/` — fluxo backlog → prompt → implementação
 - **Operação:** seção "Operação local (WSL)" no `README.md`
-- **MVP 1:** concluído (MVP1-01…07)
-- **Próximo:** F0-06 Alembic ou MVP 2 (eventos)
+- **MVP 1:** concluído (MVP1-01…08)
+- **Próximo:** MVP 2 (eventos)
 
 ## Ao implementar nova estória
 
