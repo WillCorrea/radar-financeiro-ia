@@ -1,2 +1,11 @@
-# Shell scripts must use LF (WSL/Linux)
+# WSL/Linux — forçar LF em arquivos de texto (evita CRLF do Windows/Cursor)
 *.sh text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.mdc text eol=lf
+*.ini text eol=lf
+*.mako text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.txt text eol=lf
+*.toml text eol=lf
