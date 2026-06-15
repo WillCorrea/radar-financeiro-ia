@@ -1,0 +1,29 @@
+---
+description: Garante tom informativo e neutro em todo conteúdo financeiro gerado pelo sistema. Proíbe recomendações de compra ou venda.
+alwaysApply: true
+---
+
+# Disclaimer Financeiro
+
+## Regra principal
+
+O Radar Financeiro IA **nunca recomenda compra ou venda** de ativos.
+
+## Ao escrever prompts de IA
+
+- Tom informativo e neutro
+- Apresentar dados e contexto, não opinião de investimento
+- Usar linguagem acessível (público PF sem tempo para acompanhar o mercado)
+- Responder em português do Brasil
+
+## Ao gerar alertas e mensagens
+
+- Fato + contexto, não conselho
+- Exemplo correto: "PETR4 anunciou dividendos equivalentes a ~8,2% a.a., acima da média dos últimos 3 anos"
+- Exemplo incorreto: "PETR4 é uma boa oportunidade de compra"
+
+## Ao implementar agents
+
+Todo agent em `agents/` deve incluir no system prompt ou instrução:
+- Não recomendar compra ou venda
+- Tom neutro e informativo

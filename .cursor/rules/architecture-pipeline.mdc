@@ -1,0 +1,47 @@
+---
+description: Define a arquitetura em camadas do Radar Financeiro IA. Collectors coletam, analyzers analisam, agents usam IA, jobs orquestram, notifications entregam.
+alwaysApply: true
+---
+
+# Arquitetura — Pipeline
+
+## Fluxo obrigatório
+
+```
+collectors → analyzers → agents → jobs → notifications
+                                    ↘ database
+```
+
+## Responsabilidades
+
+| Camada | Faz | Não faz |
+|---|---|---|
+| `collectors/` | Busca e normaliza dados externos | Análise, IA, envio |
+| `analyzers/` | Regras determinísticas, destaques | Chamadas de IA, HTTP para APIs |
+| `agents/` | Geração de texto com IA | Coleta de dados, regras de negócio |
+| `jobs/` | Orquestra o fluxo completo | Lógica de baixo nível (delega às camadas) |
+| `notifications/` | Entrega mensagens | Análise ou persistência |
+| `database/` | Models e conexão | Lógica de negócio |
+| `app/` | API REST | Orquestração de jobs (delega a `jobs/`) |
+
+## Ao adicionar funcionalidade
+
+1. Identifique a camada correta
+2. Se precisar de dados novos → `collectors/`
+3. Se precisar de regra/detecção → `analyzers/`
+4. Se precisar de texto com IA → `agents/`
+5. Conecte tudo em um `jobs/`
+6. Entregue via `notifications/`
+7. Persista via `database/`
+
+## Padrões Python
+
+- `dataclasses` para DTOs entre camadas (ex: `QuoteData`, `PriceHighlight`)
+- `httpx` para chamadas HTTP em collectors
+- Configuração via `app/config.py` e `.env`
+- Tipagem com `Mapped` nos models SQLAlchemy
+
+## Documentação de referência
+
+- `docs/architecture/pipeline.md`
+- `docs/plano-implementacao.md`

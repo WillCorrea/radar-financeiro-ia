@@ -1,0 +1,61 @@
+---
+description: Contexto local do ambiente (WSL, serviços, retomada após reinício) e status do MVP 1
+alwaysApply: true
+---
+
+# Ambiente local e retomada
+
+## Stack do desenvolvedor
+
+- **OS:** WSL Ubuntu 20.04 no Windows
+- **Python:** 3.8 (usar `typing.Dict`/`Optional` em rotas FastAPI; `from __future__ import annotations` no resto)
+- **Projeto:** `~/projects/radar-financeiro-ia`
+- **venv:** `.venv` — sempre `source .venv/bin/activate`
+
+## Serviços e integrações
+
+| Serviço | Config | Notas |
+|---|---|---|
+| Postgres | Docker, porta **5433** | `docker compose up -d` |
+| BRAPI | `BRAPI_TOKEN` no `.env` | FIIs exigem token; plano free = **1 ativo/requisição** |
+| LLM | `LLM_PROVIDER=gemini` | Fallback automático se Gemini falhar (ex.: 429) |
+| Telegram | `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` | Canal principal do MVP 1 |
+| Radar diário | **cron** (padrão) | API **não** obrigatória para envio automático |
+
+## Retomar após reiniciar o PC
+
+```bash
+cd ~/projects/radar-financeiro-ia && source .venv/bin/activate
+docker compose up -d
+crontab -l    # confirmar entrada do radar
+```
+
+Teste rápido: `./scripts/run_daily_radar.sh` → ver `logs/radar-YYYYMMDD.log`
+
+Gerar linha do cron: `./scripts/print-cron-entry.sh` (lê `RADAR_SCHEDULE_*` do `.env`)
+
+> WSL precisa estar **ativo** para o cron disparar. Abrir o WSL após boot do Windows.
+
+## Como rodar o radar
+
+| Modo | Comando |
+|---|---|
+| Manual | `python run_job.py` |
+| Automático (cron) | `scripts/run_daily_radar.sh` via crontab |
+| Debug (tmux) | `python run_scheduler.py` |
+| Via API | `uvicorn app.main:app --reload` + `POST /radar/run` |
+
+## Documentação e processo
+
+- **Backlog:** `docs/backlog/fase-1/fase-1-mvp1.md`
+- **Prompts:** `docs/prompts/fase-1/` — fluxo backlog → prompt → implementação
+- **Operação:** seção "Operação local (WSL)" no `README.md`
+- **MVP 1:** concluído (MVP1-01…07)
+- **Próximo:** F0-06 Alembic ou MVP 2 (eventos)
+
+## Ao implementar nova estória
+
+1. Conferir backlog e prompt numerado em `docs/prompts/fase-x/`
+2. Respeitar `architecture-pipeline.mdc` (camadas do pipeline)
+3. Atualizar status no backlog ao concluir
+4. Nunca commitar `.env` nem expor tokens em logs

@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: radar_financeiro_db
+    environment:
+      POSTGRES_USER: radar
+      POSTGRES_PASSWORD: radar
+      POSTGRES_DB: radar_financeiro
+    ports:
+      - "5433:5432"
+    volumes:
+      - radar_financeiro_data:/var/lib/postgresql/data
+
+volumes:
+  radar_financeiro_data:
