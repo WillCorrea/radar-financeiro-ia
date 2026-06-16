@@ -26,9 +26,9 @@ Leia: `app/api/routes/radar.py`, `app/api/routes/alerts.py`, `app/main.py`
 
 ## Critérios de aceite
 
-- [ ] `POST /events/run` retorna 200
-- [ ] Filtro por `alert_type` documentado no docstring ou README
-- [ ] App sobe sem erro (`uvicorn app.main:app`)
+- [x] `POST /events/run` retorna 200
+- [x] Filtro por `alert_type` documentado no docstring ou README
+- [x] App sobe sem erro (`uvicorn app.main:app`)
 
 ## Notas para o implementador
 

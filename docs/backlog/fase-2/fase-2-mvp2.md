@@ -34,7 +34,7 @@ Eventos já alertados **não** devem ser reenviados no dia seguinte (deduplicaç
 | MVP2-06 | Formato Telegram com datas | [04-events-job-e-telegram.md](../../prompts/fase-2/04-events-job-e-telegram.md) | Alta | concluído |
 | MVP2-07 | Operação local (`run_events_job`) | [05-operacao-eventos.md](../../prompts/fase-2/05-operacao-eventos.md) | Média | concluído |
 | MVP2-08 | Testes do fluxo de eventos | [06-testes-eventos.md](../../prompts/fase-2/06-testes-eventos.md) | Média | concluído |
-| MVP2-09 | Endpoints API de eventos | [07-api-endpoints-eventos.md](../../prompts/fase-2/07-api-endpoints-eventos.md) | Baixa | pendente |
+| MVP2-09 | Endpoints API de eventos | [07-api-endpoints-eventos.md](../../prompts/fase-2/07-api-endpoints-eventos.md) | Baixa | concluído |
 
 **Ordem recomendada:** MVP2-01 → MVP2-02 → MVP2-03/04 → MVP2-05/06 → MVP2-07 → MVP2-08 → MVP2-09
 
@@ -188,12 +188,12 @@ Eventos já alertados **não** devem ser reenviados no dia seguinte (deduplicaç
 **Para** testar e integrar sem CLI
 
 **Critérios de aceite:**
-- [ ] `POST /events/run` dispara `EventsJob`
-- [ ] `GET /alerts?alert_type=dividend` (ou tipos novos) funciona com filtros existentes
-- [ ] Router registrado em `app/main.py`
+- [x] `POST /events/run` dispara `EventsJob`
+- [x] `GET /alerts?alert_type=dividend` (ou tipos novos) funciona com filtros existentes
+- [x] Router registrado em `app/main.py`
 
 **Prompt:** [`docs/prompts/fase-2/07-api-endpoints-eventos.md`](../../prompts/fase-2/07-api-endpoints-eventos.md)
-**Status:** pendente
+**Status:** concluído
 
 ---
 

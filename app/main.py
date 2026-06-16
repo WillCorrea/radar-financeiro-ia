@@ -3,6 +3,7 @@ from typing import Dict
 from fastapi import FastAPI
 
 from app.api.routes.alerts import router as alerts_router
+from app.api.routes.events import router as events_router
 from app.api.routes.health import router as health_router
 from app.api.routes.messages import router as messages_router
 from app.api.routes.radar import router as radar_router
@@ -18,6 +19,7 @@ app = FastAPI(
 
 app.include_router(health_router)
 app.include_router(radar_router)
+app.include_router(events_router)
 app.include_router(alerts_router)
 app.include_router(messages_router)
 

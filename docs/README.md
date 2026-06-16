@@ -54,7 +54,7 @@ Base de conhecimento do projeto. Tudo que precisamos para ir da Fase 0 até o MV
 - [x] Fase 0 — documentação e convenções (incl. F0-06 Alembic)
 
 - [x] Fase 1 — MVP 1 (Radar Diário) — [backlog](backlog/fase-1/fase-1-mvp1.md)
-- [ ] Fase 2 — MVP 2 (Eventos Relevantes) — [backlog](backlog/fase-2/fase-2-mvp2.md)
+- [x] Fase 2 — MVP 2 (Eventos Relevantes) — [backlog](backlog/fase-2/fase-2-mvp2.md)
 
 - [ ] Fase 3 — MVP 3 (Inteligência Financeira)
 

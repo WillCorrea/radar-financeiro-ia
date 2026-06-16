@@ -12,7 +12,13 @@ router = APIRouter(tags=["alerts"])
 @router.get("/alerts")
 def list_alerts(
     limit: int = Query(10, ge=1, le=100),
-    alert_type: Optional[str] = Query(None),
+    alert_type: Optional[str] = Query(
+        None,
+        description=(
+            "Filtra por tipo: price_highlight, daily_summary (MVP 1); "
+            "dividend, jcp, corporate_event (MVP 2)"
+        ),
+    ),
     db: Session = Depends(get_db),
 ) -> Dict[str, List[Dict[str, Any]]]:
     query = db.query(Alert).order_by(Alert.created_at.desc())
@@ -29,6 +35,7 @@ def _serialize_alert(alert: Alert) -> Dict[str, Any]:
         "alert_type": alert.alert_type,
         "title": alert.title,
         "content": alert.content,
+        "fingerprint": alert.fingerprint,
         "ticker": alert.asset.ticker if alert.asset else None,
         "created_at": alert.created_at.isoformat(),
     }

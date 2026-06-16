@@ -55,6 +55,14 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 Health check: `GET /health`
 
+Endpoints principais:
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| `POST` | `/radar/run` | Dispara radar diário (preços + resumo IA) |
+| `POST` | `/events/run` | Dispara job de eventos (dividendos, JCP, fatos CVM) |
+| `GET` | `/alerts` | Lista alertas; filtro `?alert_type=dividend` (ou `jcp`, `corporate_event`, `price_highlight`, `daily_summary`) |
+
 ## Operação local (WSL)
 
 Radar automático no seu PC via **cron** (padrão). A API é opcional para o envio diário.
@@ -181,4 +189,4 @@ Toda a visão, roadmap e plano de implementação (Fase 0 → MVP 5) está em [`
 
 - [x] MVP 1 — radar diário (código, API, testes, operação local, BRAPI multi-ativo)
 - [x] F0-06 — Alembic (migrations)
-- [ ] MVP 2 — eventos relevantes — [backlog](docs/backlog/fase-2/fase-2-mvp2.md) · [prompts](docs/prompts/fase-2/README.md)
+- [x] MVP 2 — eventos relevantes — [backlog](docs/backlog/fase-2/fase-2-mvp2.md) · [prompts](docs/prompts/fase-2/README.md)
