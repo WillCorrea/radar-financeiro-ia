@@ -11,7 +11,8 @@ docs/backlog/
 │   └── fase-0-fundacao.md
 ├── fase-1/
 │   └── fase-1-mvp1.md
-├── fase-2/                   # Criar quando iniciar MVP 2
+├── fase-2/
+│   └── fase-2-mvp2.md
 ├── fase-3/
 ├── fase-4/
 └── fase-5/
@@ -50,15 +51,15 @@ flowchart LR
 
 | Fase | Arquivo | MVP | Status |
 |---|---|---|---|
-| 0 | [fase-0/fase-0-fundacao.md](fase-0/fase-0-fundacao.md) | Fundação | Quase concluída (F0-06 pendente) |
-| 1 | [fase-1/fase-1-mvp1.md](fase-1/fase-1-mvp1.md) | Radar Diário | Pendente |
-| 2 | — | Eventos Relevantes | Não iniciado |
+| 0 | [fase-0/fase-0-fundacao.md](fase-0/fase-0-fundacao.md) | Fundação | Concluída |
+| 1 | [fase-1/fase-1-mvp1.md](fase-1/fase-1-mvp1.md) | Radar Diário | Concluída |
+| 2 | [fase-2/fase-2-mvp2.md](fase-2/fase-2-mvp2.md) | Eventos Relevantes | Pendente |
 | 3 | — | Inteligência Financeira | Não iniciado |
 | 4 | — | Personalização | Não iniciado |
 | 5 | — | Assistente Conversacional | Não iniciado |
 
 ## Como invocar no chat
 
-> Implemente a estória MVP1-01 conforme `docs/prompts/fase-1/01-coletar-variacoes.md`
+> Implemente a estória MVP2-01 conforme `docs/prompts/fase-2/01-coletar-dividendos-jcp.md`
 
 Ou consulte o backlog da fase para ver a ordem recomendada.

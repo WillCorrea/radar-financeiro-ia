@@ -51,7 +51,7 @@ Data-base: XX/XX/XXXX
 Pagamento previsto: XX/XX/XXXX
 ```
 
-**Status no código:** `EventAnalyzer` existe como placeholder.
+**Status no código:** backlog e prompts em `docs/backlog/fase-2/` e `docs/prompts/fase-2/` — implementação pendente (`EventAnalyzer` placeholder).
 
 ---
 

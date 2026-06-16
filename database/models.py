@@ -70,6 +70,7 @@ class Alert(Base):
     alert_type: Mapped[str] = mapped_column(String(50), nullable=False)
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     content: Mapped[str] = mapped_column(Text, nullable=False)
+    fingerprint: Mapped[Optional[str]] = mapped_column(String(128), nullable=True, index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     asset: Mapped[Optional["Asset"]] = relationship(back_populates="alerts")

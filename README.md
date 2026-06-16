@@ -24,7 +24,7 @@ radar-financeiro-ia/
 ├── jobs/             # Orquestração
 ├── alembic/          # Migrations do PostgreSQL
 ├── scripts/          # Operação local (cron)
-├── logs/             # Logs do radar diário (gitignored)
+├── logs/             # Logs do radar e eventos (gitignored)
 └── database/         # Models e conexão
 ```
 
@@ -97,18 +97,48 @@ CRON_TZ=America/Sao_Paulo
 ### Desligar ambiente
 
 ```bash
-crontab -e          # remova ou comente a linha do radar
+crontab -e          # remova ou comente as linhas do radar/eventos
 docker compose down # opcional — para o Postgres
+```
+
+### Job de eventos (MVP 2)
+
+Alertas de dividendos, JCP e fatos relevantes — **separado** do radar de preço. Não usa Gemini.
+
+```bash
+chmod +x scripts/run_events_job.sh scripts/print-events-cron-entry.sh
+
+# Teste manual
+python run_events_job.py
+# ou com log:
+./scripts/run_events_job.sh
+tail logs/events-$(date +%Y%m%d).log
+
+# Cron (ex.: 19:00, após radar 18:30)
+./scripts/print-events-cron-entry.sh
+crontab -e
+```
+
+Guia completo: [`docs/operations/events-job.md`](docs/operations/events-job.md).
+
+Exemplo de crontab com os dois jobs:
+
+```cron
+CRON_TZ=America/Sao_Paulo
+30 18 * * * /home/wneto/projects/radar-financeiro-ia/scripts/run_daily_radar.sh
+0 19 * * * /home/wneto/projects/radar-financeiro-ia/scripts/run_events_job.sh
 ```
 
 ### Verificar se está funcionando
 
 ```bash
 docker compose ps                          # Postgres em 0.0.0.0:5433
-crontab -l                                 # entrada do radar presente
-ls -la logs/                               # arquivos radar-YYYYMMDD.log
-tail -f logs/radar-$(date +%Y%m%d).log     # última execução
-python run_job.py                          # teste manual
+crontab -l                                 # entradas do radar e eventos
+ls -la logs/                               # radar-YYYYMMDD.log, events-YYYYMMDD.log
+tail -f logs/radar-$(date +%Y%m%d).log     # última execução do radar
+tail -f logs/events-$(date +%Y%m%d).log    # última execução de eventos
+python run_job.py                          # teste manual radar
+python run_events_job.py                   # teste manual eventos
 ```
 
 ### Modo debug (tmux)
@@ -151,4 +181,4 @@ Toda a visão, roadmap e plano de implementação (Fase 0 → MVP 5) está em [`
 
 - [x] MVP 1 — radar diário (código, API, testes, operação local, BRAPI multi-ativo)
 - [x] F0-06 — Alembic (migrations)
-- [ ] MVP 2 — eventos relevantes (dividendos, fatos relevantes)
+- [ ] MVP 2 — eventos relevantes — [backlog](docs/backlog/fase-2/fase-2-mvp2.md) · [prompts](docs/prompts/fase-2/README.md)

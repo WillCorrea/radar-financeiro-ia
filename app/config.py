@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from typing import Any
+
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -14,6 +17,8 @@ class Settings(BaseSettings):
     llm_provider: str = "gemini"
     gemini_api_key: str = ""
     gemini_model: str = "gemini-2.0-flash"
+    gemini_max_retries: int = 3
+    gemini_retry_base_seconds: float = 2.0
 
     openai_api_key: str = ""
     openai_model: str = "gpt-4o-mini"
@@ -29,6 +34,18 @@ class Settings(BaseSettings):
 
     radar_schedule_hour: int = 18
     radar_schedule_minute: int = 30
+
+    events_lookback_days: int = 30
+
+    events_schedule_hour: int = 19
+    events_schedule_minute: int = 0
+
+    @model_validator(mode="before")
+    @classmethod
+    def _strip_env_values(cls, data: Any) -> Any:
+        if not isinstance(data, dict):
+            return data
+        return {key: value.strip() if isinstance(value, str) else value for key, value in data.items()}
 
     @property
     def brapi_token_configured(self) -> bool:

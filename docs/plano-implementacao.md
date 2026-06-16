@@ -161,7 +161,9 @@ O mercado apresenta sinais mistos...
 | 2.5 | Job de eventos | `jobs/events_job.py` |
 | 2.6 | Formato de alerta com datas | `notifications/` |
 
-**Prompt:** `prompts/mvp2-eventos-relevantes.md` (criar na Fase 2)
+**Prompt:** [`prompts/fase-2/README.md`](prompts/fase-2/README.md) — ver prompts numerados 01–07
+
+**Backlog:** [`backlog/fase-2/fase-2-mvp2.md`](backlog/fase-2/fase-2-mvp2.md)
 
 **Skills candidatas:** `implement-collector`, `add-alert-type`
 

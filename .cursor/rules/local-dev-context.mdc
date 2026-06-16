@@ -51,7 +51,9 @@ Gerar linha do cron: `./scripts/print-cron-entry.sh` (lê `RADAR_SCHEDULE_*` do 
 - **Prompts:** `docs/prompts/fase-1/` — fluxo backlog → prompt → implementação
 - **Operação:** seção "Operação local (WSL)" no `README.md`
 - **MVP 1:** concluído (MVP1-01…08)
-- **Próximo:** MVP 2 (eventos)
+- **Backlog MVP 2:** `docs/backlog/fase-2/fase-2-mvp2.md`
+- **Prompts MVP 2:** `docs/prompts/fase-2/` — começar por MVP2-01
+- **Próximo:** implementar MVP2-01 (dividendos/JCP)
 
 ## Ao implementar nova estória
 

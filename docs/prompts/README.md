@@ -13,10 +13,13 @@ docs/prompts/
 └── fase-1/
     ├── README.md
     ├── 01-coletar-variacoes.md
-    ├── 02-destaques-preco.md
-    ├── 03-scheduler.md
-    ├── 04-api-endpoints.md
-    └── 05-testes.md
+    ├── …
+    └── 07-brapi-um-ativo-por-requisicao.md
+└── fase-2/
+    ├── README.md
+    ├── 01-coletar-dividendos-jcp.md
+    ├── …
+    └── 07-api-endpoints-eventos.md
 ```
 
 ## Relação backlog → prompt
@@ -25,6 +28,7 @@ docs/prompts/
 |---|---|
 | [`backlog/fase-0/`](../backlog/fase-0/fase-0-fundacao.md) | [`fase-0/`](fase-0/README.md) |
 | [`backlog/fase-1/`](../backlog/fase-1/fase-1-mvp1.md) | [`fase-1/`](fase-1/README.md) |
+| [`backlog/fase-2/`](../backlog/fase-2/fase-2-mvp2.md) | [`fase-2/`](fase-2/README.md) |
 
 ## Como usar
 
@@ -32,6 +36,6 @@ docs/prompts/
 2. Execute os prompts na ordem numérica
 3. Invoque no chat:
 
-> Implemente a estória MVP1-01 conforme `docs/prompts/fase-1/01-coletar-variacoes.md`
+> Implemente a estória MVP2-01 conforme `docs/prompts/fase-2/01-coletar-dividendos-jcp.md`
 
 4. Ao concluir, marque a estória como concluída no backlog

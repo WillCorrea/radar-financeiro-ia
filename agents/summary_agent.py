@@ -5,7 +5,7 @@ from datetime import date
 import httpx
 from openai import OpenAI
 
-from agents.gemini_client import generate_text as generate_gemini_text
+from agents.gemini_client import format_http_error, generate_text as generate_gemini_text
 from app.config import settings
 
 SYSTEM_PROMPT = "Responda em português do Brasil."
@@ -33,7 +33,11 @@ class SummaryAgent:
                 return self._generate_with_openai(prompt)
         except (httpx.HTTPError, ValueError) as exc:
             if settings.debug:
-                print(f"[SummaryAgent] Falha no provedor {provider}: {exc}")
+                detail = format_http_error(exc) if isinstance(exc, httpx.HTTPError) else str(exc)
+                print(
+                    f"[SummaryAgent] Provedor {provider} indisponível ({detail}). "
+                    "Usando resumo automático."
+                )
 
         return self._fallback_summary(highlights)
 
@@ -52,6 +56,8 @@ class SummaryAgent:
             system_prompt=SYSTEM_PROMPT,
             user_prompt=prompt,
             temperature=0.4,
+            max_retries=settings.gemini_max_retries,
+            retry_base_seconds=settings.gemini_retry_base_seconds,
         )
 
     def _generate_with_openai(self, prompt: str) -> str:

@@ -42,6 +42,31 @@ alembic current   # deve mostrar 001_initial (head)
 
 Depois disso, novas alterações em `database/models.py` seguem o fluxo normal com `revision --autogenerate` + `upgrade head`.
 
+## Migrations aplicadas
+
+| Revisão | Descrição |
+|---|---|
+| `001_initial` | Schema inicial (6 tabelas) |
+| `002_alert_fingerprint` | Coluna `alerts.fingerprint` + índices para eventos MVP 2 |
+
+### Tipos de alerta (MVP 2)
+
+Valores em `alerts.alert_type`:
+
+| Valor | Uso |
+|---|---|
+| `dividend` | Dividendos |
+| `jcp` | Juros sobre capital próprio |
+| `corporate_event` | Fatos relevantes (CVM) |
+| `price_highlight` | Destaques de preço (MVP 1) |
+| `daily_summary` | Resumo diário IA (MVP 1) |
+
+Após atualizar o código, aplique:
+
+```bash
+alembic upgrade head
+```
+
 ## Fluxo para alterar o schema
 
 1. Edite `database/models.py`
